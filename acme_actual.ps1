@@ -154,4 +154,22 @@ $dnstodo = $completedChallenge.Challenges | Where-Object { $_.Type -eq "dns-01" 
 Select-DNSTXT $dnstodo
 #paste into DNS records
 
-New-ACMEProviderConfig -WebServerProvider Manual -Alias manualHttpProvider -FilePath $vault\answer2.txt
+#New-ACMEProviderConfig -WebServerProvider Manual -Alias manualHttpProvider -FilePath $vault\answer2.txt
+Submit-ACMEChallenge bunker01 -ChallengeType dns-01 
+Submit-ACMEChallenge util01 -ChallengeType dns-01
+Submit-ACMEChallenge guac01 -ChallengeType dns-01 
+Submit-ACMEChallenge admin01 -ChallengeType dns-01
+Submit-ACMEChallenge dev01 -ChallengeType dns-01 
+Submit-ACMEChallenge www01 -ChallengeType dns-01
+Submit-ACMEChallenge u01 -ChallengeType dns-01 
+Submit-ACMEChallenge v01 -ChallengeType dns-01
+
+$sites = ('bunker01','www01','dev01','util01','guac01','u01','v01')
+$sites | %{ Update-ACMEIdentifier $_ }
+New-ACMECertificate bunker01 -Generate -AlternativeIdentifierRefs $sites -alias mastercert
+Submit-ACMECertificate mastercert
+Update-ACMECertificate mastercert
+Get-ACMECertificate mastercert -ExportPkcs12 $HOME\Desktop\2017-bunker011-master.pfx
+#for transfering to apache
+Get-ACMECertificate mastercert -ExportKeyPEM $HOME\Desktop\2017-bunker011-master.pem
+Get-ACMECertificate mastercert -ExportCertificatePEM $HOME\Desktop\2017-bunker011-certificate.pem
