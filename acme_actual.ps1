@@ -173,3 +173,6 @@ Get-ACMECertificate mastercert -ExportPkcs12 $HOME\Desktop\2017-bunker011-master
 #for transfering to apache
 Get-ACMECertificate mastercert -ExportKeyPEM $HOME\Desktop\2017-bunker011-master.pem
 Get-ACMECertificate mastercert -ExportCertificatePEM $HOME\Desktop\2017-bunker011-certificate.pem
+
+#Needed this for VCSA wizard (/usr/lib/vmware-vmca/bin/certificate-manager)
+Get-ACMECertificate mastercert -ExportIssuerPEM $HOME\Desktop\2017-bunker011-issuer.pem
